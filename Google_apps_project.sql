@@ -1,4 +1,4 @@
--- shows table without duplicates
+-- Shows  data table without duplicates
 
 create view No_Duplicates as
 with cte as (select *,
@@ -33,7 +33,7 @@ select category, Content_Rating,
 from No_Duplicates
 ;
 
--- find avg rating, reviews, installs per category
+-- Shows avg rating, reviews, installs per category
 with cat as (
      Select nd.category,
         sum(case when gg.Sentiment = 'Positive' then 1 else 0 end) as num_of_positive,
@@ -56,7 +56,7 @@ on t1.category = t2.category
 join cat c on t2.category = c.category
 group by t1.category;
 
--- find avg rating, reviews, installs per type  Compare avg rating of free and paid apps and which have more positive/negative reviews
+-- Shows  avg rating, reviews, installs per type  Compare avg rating of free and paid apps and which have more positive/negative reviews
 with cte as (
      Select nd.type,
         sum(case when gg.Sentiment = 'Positive' then 1 else 0 end) as num_of_pos_reviews,
@@ -80,7 +80,7 @@ on t3.type = t4.type
 where t3.type <>'NaN'
 group by t3.type;
 
--- if there is a correlation between negative reviews and date of last update
+--  shows if there is a correlation between negative reviews and date of last update
 
 select ndd.app, ndd.category, gur.sentiment,
        trim(substring(ndd.Last_Updated, CHARINDEX(' ', ndd.Last_Updated), length(ndd.last_updated) -CHARINDEX(', ', ndd.Last_Updated) -2), ',') as Upd_Day,
